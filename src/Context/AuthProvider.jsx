@@ -1,7 +1,11 @@
 import React from "react";
 import { AuthContext } from "./AuthContext";
 // import { createUserWithEmailAndPassword } from "firebase/auth";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 import { auth } from "../Firebase/Firebase.init";
 
 const AuthProvider = ({ children }) => {
@@ -9,13 +13,21 @@ const AuthProvider = ({ children }) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  const userInfo = {
-    createUser,
+  const signIn = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
-  return (
-    <AuthContext value={userInfo}>{children}</AuthContext>
-  );
+  const SignOutFormFirebase = (auth) => {
+    return signOut(auth);
+  };
+
+  const userInfo = {
+    createUser,
+    SignOutFormFirebase,
+    signIn,
+  };
+
+  return <AuthContext value={userInfo}>{children}</AuthContext>;
 };
 
 export default AuthProvider;
